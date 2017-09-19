@@ -1,0 +1,17 @@
+env = Environment()
+# CPPPATH
+env["CPPPATH"] = []
+env["CPPPATH"] += ["/opt/intel/mkl/include"]
+# LIBS
+env["LIBS"] = []
+env["LIBS"] += ["pthread"]
+env["LIBS"] += ["m"]
+env["LIBS"] += ["dl"]
+# MKL static LIBS
+env["MKLLIBS"] = []
+env["MKLLIBS"] += ["/opt/intel/mkl/lib/intel64/libmkl_intel_lp64.a"]
+env["MKLLIBS"] += ["/opt/intel/mkl/lib/intel64/libmkl_sequential.a"]
+env["MKLLIBS"] += ["/opt/intel/mkl/lib/intel64/libmkl_core.a"]
+# overwrite SCons LINKCOM
+env["LINKCOM"] = "$LINK -o $TARGET $LINKFLAGS $__RPATH $SOURCES $_LIBDIRFLAGS -Wl,--start-group $MKLLIBS -Wl,--end-group $_LIBFLAGS"
+env.Program("main.cpp")

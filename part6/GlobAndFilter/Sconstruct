@@ -1,0 +1,13 @@
+import os
+
+def cppFilter(cppFile):
+    return os.path.basename(cppFile.path) != "filterMe.cpp"
+
+env = Environment()
+for root, dirs, files in os.walk(".", topdown=False):
+    for dir in dirs:
+        allCpp = Glob("%s/*.cpp" % os.path.join(root, dir))
+        allCppFiltered = filter(cppFilter, allCpp) 
+        for cppFile in  allCppFiltered:
+            print "*** Adding %s to targets..." % cppFile
+            env.Object(cppFile)

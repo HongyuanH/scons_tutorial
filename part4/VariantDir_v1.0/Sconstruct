@@ -1,0 +1,2 @@
+env = Environment()
+SConscript("src/SConscript", exports="env")

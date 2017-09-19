@@ -1,0 +1,18 @@
+vars = Variables(None, ARGUMENTS)
+vars.Add(EnumVariable('BUILD_TYPE', 'type of build to use', 'all',  allowed_values=('debug', 'release', 'all')))
+env = Environment(variables=vars)
+
+def add_target(build_dir, ccflags):
+    print "*** Adding targets to '%s'..." % build_dir
+    envc = env.Clone()
+    envc["CCFLAGS"] = ccflags
+    envc.Object(target="%s/HelloWorld.o"%build_dir, source="src/HelloWorld.cpp")
+    envc.Program(target="%s/HelloWorld"%build_dir, source="%s/HelloWorld.o"%build_dir)
+
+if env["BUILD_TYPE"] == "debug":
+    add_target("debug", ["-g"])
+elif env["BUILD_TYPE"] == "release":
+    add_target("delease", ["-O3"])
+elif env["BUILD_TYPE"] == "all":
+    add_target("debug", ["-g"])
+    add_target("release", ["-O3"])

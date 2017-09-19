@@ -1,0 +1,20 @@
+# global env
+env = Environment()
+env["CPPPATH"] = ["#/include"]
+# build library (dynamic and static)
+env.Object(target="build/src/HelloWorld.o", source="src/HelloWorld.cpp")
+env.Library(target="build/lib/libHelloWorld.so", source="build/src/HelloWorld.o")
+env.StaticLibrary(target="build/lib/libHelloWorld.a", source="build/src/HelloWorld.o")
+# build object file for target
+env.Object(target="build/target/main.o", source="target/main.cpp")
+# build target with dynamic library (.so)
+env1 = env.Clone()
+env1["LIBS"] = ["HelloWorld"]
+env1["LIBPATH"] = ["build/lib"]
+env1.Program(target="build/testLibrary", source="build/target/main.o")
+# build target with static library (.a)
+env2 = env.Clone()
+env2["LIBS"] = []
+env2["LIBPATH"] = []
+env2.Program(target="build/testStaticLibrary", 
+            source=["build/target/main.o", "build/lib/libHelloWorld.a"])

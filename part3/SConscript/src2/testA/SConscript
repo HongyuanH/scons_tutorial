@@ -1,0 +1,4 @@
+Import("env")
+env = env.Clone()
+env["CCFLAGS"] += ["-O1"]
+env.Program("testA.cpp")
